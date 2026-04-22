@@ -2,35 +2,122 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Raksha & Co. | Sri Lankan Art</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raksha & Co. | Authentic Sri Lankan Art</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
+        :root { --accent: #7c2d12; } /* Deep Orange/Brown */
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+    </style>
 </head>
 <body class="bg-stone-50 text-stone-900">
-    <nav class="p-6 border-b bg-white flex justify-between">
-        <h1 class="text-xl font-bold tracking-widest">RAKSHA & CO.</h1>
-        <a href="admin.html" class="text-sm border px-3 py-1 rounded hover:bg-stone-100">Staff Login</a>
+
+    <nav class="flex justify-between items-center px-8 py-6 bg-white border-b sticky top-0 z-50">
+        <div class="text-2xl font-black tracking-tighter uppercase">Raksha & Co.</div>
+        <div class="hidden md:flex space-x-8 text-xs font-bold uppercase tracking-widest">
+            <a href="#home" class="hover:text-orange-800 transition">Home</a>
+            <a href="#collection" class="hover:text-orange-800 transition">Collection</a>
+            <a href="#about" class="hover:text-orange-800 transition">Our Story</a>
+            <a href="admin.html" class="bg-black text-white px-4 py-2 rounded-sm hover:bg-stone-800 transition">Staff</a>
+        </div>
     </nav>
 
-    <div id="shop" class="max-w-6xl mx-auto p-10 grid grid-cols-1 md:grid-cols-3 gap-10">
+    <section id="home" class="relative h-[80vh] flex items-center justify-center text-center px-6 bg-stone-200 overflow-hidden">
+        <div class="z-10 max-w-3xl">
+            <h2 class="text-5xl md:text-7xl mb-6 leading-tight">Masterpieces from <br>Ambalangoda</h2>
+            <p class="text-lg text-stone-600 mb-8 italic">Bringing the vibrant spirit of Sri Lankan folklore to Japan.</p>
+            <a href="#collection" class="bg-orange-900 text-white px-10 py-4 font-bold uppercase text-sm tracking-widest hover:bg-orange-800 transition">Explore Collection</a>
         </div>
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]"></div>
+    </section>
+
+    <section id="collection" class="py-24 px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+            <div>
+                <h3 class="text-4xl mb-2">The Collection</h3>
+                <p class="text-stone-500">Hand-carved and hand-painted by local artisans.</p>
+            </div>
+            <div class="mt-4 md:mt-0 text-sm font-bold border-b-2 border-stone-900 pb-1 cursor-pointer">View All Artifacts</div>
+        </div>
+        
+        <div id="product-list" class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <p class="col-span-3 text-center py-20 text-stone-400 animate-pulse">Fetching the treasury...</p>
+        </div>
+    </section>
+
+    <section id="about" class="py-24 bg-white px-8">
+        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+            <div class="bg-stone-100 aspect-square rounded-full overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1605648916319-cf082f7524a1?auto=format&fit=crop&q=80" class="w-full h-full object-cover">
+            </div>
+            <div>
+                <h3 class="text-4xl mb-6">Built on Heritage</h3>
+                <p class="text-stone-600 leading-relaxed mb-6">
+                    Raksha & Co. was founded to preserve the dying art of Sri Lankan mask carving. Each piece is crafted from the sacred Kaduru tree, dried in the sun, and painted with traditional techniques passed down through seven generations.
+                </p>
+                <p class="text-stone-600 leading-relaxed">
+                    Now based in Japan, we ensure these ceremonial spirits find a home where their craftsmanship is truly appreciated.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-stone-900 text-stone-400 py-16 px-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-stone-800 pb-12 mb-12">
+            <div class="col-span-1 md:col-span-2">
+                <h1 class="text-white text-2xl font-black mb-4">RAKSHA & CO.</h1>
+                <p class="max-w-xs">Traditional Sri Lankan ceremonial art, delivered directly to your doorstep in Japan.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Explore</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-white transition">Shipping Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition">Return Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Contact</h4>
+                <p class="text-sm">Tokyo, Japan<br>info@raksha-co.jp</p>
+            </div>
+        </div>
+        <div class="text-center text-xs tracking-widest uppercase">
+            &copy; 2024 Raksha & Co. — Ambalangoda to Tokyo.
+        </div>
+    </footer>
 
     <script>
         const supabase = supabase.createClient('YOUR_URL', 'YOUR_KEY');
 
-        async function loadShop() {
-            const { data } = await supabase.from('products').select('*');
-            const shop = document.getElementById('shop');
-            data.forEach(item => {
-                shop.innerHTML += `
-                    <div class="bg-white p-4 shadow-sm border border-stone-200">
-                        <img src="${item.image_url}" class="w-full h-64 object-cover mb-4">
-                        <h2 class="text-lg font-bold">${item.name}</h2>
-                        <p class="text-orange-900">¥${item.price_jpy.toLocaleString()}</p>
-                    </div>`;
+        async function fetchProducts() {
+            const { data: products, error } = await supabase.from('products').select('*');
+            const list = document.getElementById('product-list');
+            
+            if (error) {
+                list.innerHTML = `<p class="col-span-3 text-center text-red-500">Could not connect to the treasury.</p>`;
+                return;
+            }
+
+            list.innerHTML = ''; // Clear loading
+            products.forEach(p => {
+                list.innerHTML += `
+                    <div class="group cursor-pointer">
+                        <div class="relative overflow-hidden bg-stone-200 aspect-[3/4] mb-6">
+                            <img src="${p.image_url}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition">
+                                <button class="w-full bg-white text-black py-2 text-xs font-bold uppercase tracking-widest">Inquire Now</button>
+                            </div>
+                        </div>
+                        <h4 class="text-xl font-bold mb-1">${p.name}</h4>
+                        <p class="text-orange-900 font-semibold">¥${Number(p.price_jpy).toLocaleString()}</p>
+                    </div>
+                `;
             });
         }
-        loadShop();
+        fetchProducts();
     </script>
 </body>
 </html>
