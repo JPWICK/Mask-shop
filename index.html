@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Raksha & Co. | Sri Lankan Art</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-stone-50 text-stone-900">
+    <nav class="p-6 border-b bg-white flex justify-between">
+        <h1 class="text-xl font-bold tracking-widest">RAKSHA & CO.</h1>
+        <a href="admin.html" class="text-sm border px-3 py-1 rounded hover:bg-stone-100">Staff Login</a>
+    </nav>
+
+    <div id="shop" class="max-w-6xl mx-auto p-10 grid grid-cols-1 md:grid-cols-3 gap-10">
+        </div>
+
+    <script>
+        const supabase = supabase.createClient('YOUR_URL', 'YOUR_KEY');
+
+        async function loadShop() {
+            const { data } = await supabase.from('products').select('*');
+            const shop = document.getElementById('shop');
+            data.forEach(item => {
+                shop.innerHTML += `
+                    <div class="bg-white p-4 shadow-sm border border-stone-200">
+                        <img src="${item.image_url}" class="w-full h-64 object-cover mb-4">
+                        <h2 class="text-lg font-bold">${item.name}</h2>
+                        <p class="text-orange-900">¥${item.price_jpy.toLocaleString()}</p>
+                    </div>`;
+            });
+        }
+        loadShop();
+    </script>
+</body>
+</html>
