@@ -2,29 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel</title>
+    <title>Admin Dashboard | Raksha & Co.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-gray-100 p-10">
-    <div class="max-w-lg mx-auto bg-white p-8 rounded shadow-lg">
-        <h2 class="text-2xl font-bold mb-6">Add New Product</h2>
-        <div class="space-y-4">
-            <input id="name" placeholder="Mask Name" class="w-full border p-2 rounded">
-            <input id="price" type="number" placeholder="Price (JPY)" class="w-full border p-2 rounded">
-            <input id="img" placeholder="Image URL (Direct link)" class="w-full border p-2 rounded">
-            <button onclick="save()" class="w-full bg-black text-white p-3 rounded font-bold">SAVE TO SQL</button>
+<body class="bg-stone-100 p-10 font-sans">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-3xl font-bold italic">Inventory Manager</h1>
+            <a href="index.html" class="text-stone-500 hover:text-black">← Back to Store</a>
         </div>
-        <div id="status" class="mt-4 text-center text-green-600"></div>
+
+        <div class="bg-white p-8 rounded-lg shadow-sm border border-stone-200 mb-10">
+            <h2 class="text-xl font-bold mb-6">Add New Masterpiece</h2>
+            <div class="grid grid-cols-2 gap-6">
+                <div class="col-span-2 md:col-span-1">
+                    <label class="block text-xs font-bold uppercase mb-2">Mask Name</label>
+                    <input id="name" placeholder="e.g. Naga Raksha" class="w-full border p-3 rounded">
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <label class="block text-xs font-bold uppercase mb-2">Price (JPY)</label>
+                    <input id="price" type="number" placeholder="25000" class="w-full border p-3 rounded">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-xs font-bold uppercase mb-2">Image URL</label>
+                    <input id="img" placeholder="https://..." class="w-full border p-3 rounded">
+                </div>
+                <button onclick="addMask()" class="col-span-2 bg-stone-900 text-white p-4 font-bold rounded hover:bg-black transition">SAVE TO DATABASE</button>
+            </div>
+            <p id="msg" class="mt-4 text-center text-sm font-bold"></p>
+        </div>
     </div>
 
     <script>
-        const supabase = supabase.createClient('YOUR_URL', 'YOUR_KEY');
+        const supabase = supabase.createClient('wpyvnjxtisqiqzppgepr', 'jUlxz_ovfsbqtG9r3SNfjQ_-Nu-kFEN');
 
-        async function save() {
+        async function addMask() {
             const name = document.getElementById('name').value;
             const price = document.getElementById('price').value;
             const img = document.getElementById('img').value;
+            const msg = document.getElementById('msg');
 
             const { error } = await supabase.from('products').insert([{ 
                 name: name, 
@@ -32,8 +49,17 @@
                 image_url: img 
             }]);
 
-            if (error) alert(error.message);
-            else document.getElementById('status').innerText = "Product Added!";
+            if (error) {
+                msg.innerText = "Error: " + error.message;
+                msg.className = "mt-4 text-center text-red-500 font-bold";
+            } else {
+                msg.innerText = "Successfully added to the treasury!";
+                msg.className = "mt-4 text-center text-green-600 font-bold";
+                // Clear form
+                document.getElementById('name').value = '';
+                document.getElementById('price').value = '';
+                document.getElementById('img').value = '';
+            }
         }
     </script>
 </body>
